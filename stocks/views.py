@@ -6,6 +6,7 @@ from decimal import Decimal, InvalidOperation
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.throttling import ScopedRateThrottle
 
 class StockView(APIView):
     """
@@ -20,6 +21,10 @@ class StockView(APIView):
         status code, so client errors (e.g., bad ticker) and upstream failures
         (e.g., provider unavailable) are correctly reflected to the caller.
         """
+        # Rate limiting (see settings.py)
+        throttle_classes = [ScopedRateThrottle]
+        throttle_scope = "stock"
+
         payload, http_status = get_payload_cached(symbol)
         return Response(payload, status=http_status)
 
@@ -37,6 +42,10 @@ class StockView(APIView):
         - Busts the GET cache for this symbol to ensure subsequent reads include
           the new purchase immediately.
         """
+
+        # Rate limiting (see settings.py)
+        throttle_classes = [ScopedRateThrottle]
+        throttle_scope = "stock"
 
         # Normalize the ticker for storage and lookups.
         symbol = symbol.upper()

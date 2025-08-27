@@ -141,4 +141,7 @@ What’s covered:
 
 - Do not commit real secrets. `.env.example` shows keys; developers copy to `.env`.
 - `.app.env` contains machine-specific cookie
+- Rate limit via **DRF throttling**
+    - Global: `45/min`
+    - Resposta ao exceder: **429 Too Many Requests**
 

@@ -151,3 +151,18 @@ LOGGING = {
 }
 
 
+# --- DRF ---------------------------------------------------------------
+REST_FRAMEWORK = {
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",     # by Ip
+        "rest_framework.throttling.ScopedRateThrottle",   # by scope (see view)
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        # global
+        "anon": "45/min",
+        # specific to view
+        "stock": "45/min",   # GET/POST /api/stock/{ticker}
+    },
+}
+
+
